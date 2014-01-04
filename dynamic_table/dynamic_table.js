@@ -19,7 +19,7 @@ $(document).ready(function() {
           success: function (response) {        
               	while(temprows.length >0)
               		temprows.pop();
-
+              	
               	var temp ="";	
               	$.each(response,function(i,item) {
                		$.each(item,function(q,r) {
@@ -51,10 +51,16 @@ $(document).ready(function() {
            }
     	});	
 
+
+
+
+
+
+
 		$("th").click(function(event) 
 		{		
 	    	if(sortOn === -1) 
-	    	{
+	    	{ 
 	    		sortOn = event.target.id;
 	    		$("th").find("img").remove();
 	        	$("#"+sortOn).append("<img src='sort_up.gif'/>");
@@ -67,7 +73,7 @@ $(document).ready(function() {
 	        	{
 	        		sortOrder=1;
 	        		$("th").find("img").remove();
-	        		$("#"+sortOn).append("<img src='sort_up.gif'/>");
+	        		$("#"+sortOn).append("<img src='sort_up.png'/>");
 	        		sort();
 	        		//console.log("reverse sort : " + rows);
 	        		renderTable();
@@ -76,7 +82,7 @@ $(document).ready(function() {
 	        	{
 	        		sortOrder=0;
 	        		$("th").find("img").remove();
-	        		$("#"+sortOn).append("<img src='sort_down.gif'/>");
+	        		$("#"+sortOn).append("<img src='sort_down.png'/>");
 	        		sort();
 	        		rows.reverse();
 	        		//console.log("reverse sort : " + rows);
@@ -87,7 +93,7 @@ $(document).ready(function() {
 	    	{
 	    		sortOn = event.target.id;
 	    		$("th").find("img").remove();
-	        	$("#"+sortOn).append("<img src='sort_up.gif'/>");
+	        	$("#"+sortOn).append("<img src='sort_up.png'/>");
 	        	sort();
 	        	
 	    	}

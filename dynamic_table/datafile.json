@@ -1,0 +1,57 @@
+
+[
+	{
+		"barcode" : "1000", 
+		"victim Name" : "unknown",
+		"victim Diagnosis Time" : "12:25pm",
+		"last treated Time" : "",
+		"victim Location" : "SAL 504",
+		"location comments" : "",
+		"medical comments" : "",
+		   "R" : "<30",
+		   "P" : "Y",
+		   "M" : "Okay",
+		   "Pulse" : "70",
+		   "Blood Pressure" : "120/60",
+		"category" : "Morgue",
+		"status" : "treated",
+		"ambulance code" : " ",
+		"destination" : " "
+
+	},{
+		"barcode" : "1000", 
+		"victim Name" : "unknown",
+		"victim Diagnosis Time" : "12:25pm",
+		"last treated Time" : "12:50pm",
+		"victim Location" : "SAL 504",
+		"location comments" : "under the table",
+		"medical comments" : "interal hemmorage",
+		   "R" : "<30",
+		   "P" : "Y",
+		   "M" : "Okay",
+		   "Pulse" : "70",
+		   "Blood Pressure" : "120/60",
+		"category" : "Delayed",
+		"status" : "treated",
+		"ambulance code" : " ",
+		"destination" : " "
+
+	},{
+		"barcode" : "1000", 
+		"victim Name" : "unknown",
+		"victim Diagnosis Time" : "12:25pm",
+		"last treated Time" : "",
+		"victim Location" : "SAL 504",
+		"location comments" : "",
+		"medical comments" : "",
+		   "R" : "<30",
+		   "P" : "Y",
+		   "M" : "Okay",
+		   "Pulse" : "70",
+		   "Blood Pressure" : "120/60",
+		"category" : "Immediate",
+		"status" : "not treated",
+		"ambulance code" : " ",
+		"destination" : " "
+	}	
+]
