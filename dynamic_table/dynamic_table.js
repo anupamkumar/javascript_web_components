@@ -8,6 +8,17 @@ var headerstored = false;
 var headerrendered = false;
 var tableheader = "";
 var dt_tableHeaderColSpan = -1;
+var dt_targetPage = "datafile.json";
+var dt_pollrate = 5000;
+var dt_tableCaption = "";
+var dt_tableHeaderColor = "";
+var dt_sortUpImageSource = "";
+var dt_sortDownImageSource = "";
+var dt_tableRowColor1 = "";
+var dt_tableRowColor2 = "";
+
+
+
 $(document).ready(function() {
     function poll() {
         $.ajax({
