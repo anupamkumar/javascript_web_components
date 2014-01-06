@@ -7,10 +7,11 @@ var sortOrder = 0; //0 - ascending , 1 - descending
 var headerstored = false;
 var headerrendered = false;
 var tableheader = "";
+var dt_tableHeaderColSpan = -1;
 $(document).ready(function() {
     function poll() {
         $.ajax({
-            url: targetPage,
+            url: dt_targetPage,
             type: "post",
             dataType: "json",
             success: function(response) {
@@ -34,45 +35,12 @@ $(document).ready(function() {
             }
         });
 
-        $("th").click(function(event) {
-            if (sortOn === -1) {
-                sortOn = event.target.id;
-                $("th").find("img").remove();
-                $("#" + sortOn).append("<img src='sort_up.png'/>");
-                sort();
-
-            }
-            if (sortOn == event.target.id) {
-                if (sortOrder == 0) {
-                    sortOrder = 1;
-                    $("th").find("img").remove();
-                    $("#" + sortOn).append("<img src='sort_up.png'/>");
-                    sort();
-                    //console.log("reverse sort : " + rows);
-                    renderTable();
-                } else {
-                    sortOrder = 0;
-                    $("th").find("img").remove();
-                    $("#" + sortOn).append("<img src='sort_down.png'/>");
-                    sort();
-                    rows.reverse();
-                    //console.log("reverse sort : " + rows);
-                    renderTable();
-                }
-            } else {
-                sortOn = event.target.id;
-                $("th").find("img").remove();
-                $("#" + sortOn).append("<img src='sort_up.png'/>");
-                sort();
-
-            }
-            //console.log("rows after sort:"+rows);
-        });
+        //$("th").click(function(event));
     }
 
     setInterval(function() {
         poll();
-    }, pollrate);
+    }, dt_pollrate);
 
     $("#filterbox").autocomplete({
         source: filterkeys
@@ -190,73 +158,6 @@ function filter(key, value) {
         }
         renderTable();
     }
-
-
-    // if (key === "status") {
-    //     while (rows.length > 0)
-    //         rows.pop();
-    //     for (u = 0; u < temprows.length; u++)
-    //         rows.push(temprows[u]);
-    //     u = 0;
-    //     while (u < rows.length) {
-    //         var temp = rows[u].split(";")[13];
-    //         if (temp != value) {
-    //             rows.splice(u, 1);
-    //             resetflag = true;
-    //         }
-    //         if (resetflag == true) {
-    //             u = 0;
-    //             resetflag = false;
-    //         } else {
-    //             u++;
-    //         }
-    //     }
-    //     renderTable();
-    // }
-    // if (key === "location") {
-    //     while (rows.length > 0)
-    //         rows.pop();
-    //     for (u = 0; u < temprows.length; u++)
-    //         rows.push(temprows[u]);
-    //     u = 0;
-    //     while (u < rows.length) {
-    //         var temp = rows[u].split(";")[4].split(" ")[0];
-    //         if (temp != value) {
-    //             rows.splice(u, 1);
-    //             resetflag = true;
-    //         }
-    //         if (resetflag == true) {
-    //             u = 0;
-    //             resetflag = false;
-    //         } else {
-    //             u++;
-    //         }
-    //     }
-    //     renderTable();
-    // }
-    // if (key === "category") {
-    //     while (rows.length > 0)
-    //         rows.pop();
-    //     for (u = 0; u < temprows.length; u++)
-    //         rows.push(temprows[u]);
-    //     u = 0;
-    //     while (u < rows.length) {
-    //         var temp = rows[u].split(";")[12];
-    //         if (temp != value) {
-    //             rows.splice(u, 1);
-    //             resetflag = true;
-    //         }
-    //         if (resetflag == true) {
-    //             u = 0;
-    //             resetflag = false;
-    //         } else {
-    //             u++;
-    //         }
-
-    //     }
-    //     renderTable();
-    // }
-
 }
 
 function sort() {
@@ -267,26 +168,11 @@ function sort() {
     for (i = 0; i < key.length; i++)
         origkey.push(key[i]);
     if (/^(\d*)$/.test(key[0])) {
-        //console.log("num");
-        key.sort();
-        //console.log(key);
-    } else if (/^[a-zA-Z() ]+$/.test(key[0])) {
-        //console.log("alpha");
-        key.sort();
-        //console.log(key);
-    } else {
         key.sort(function(a, b) {
-            var regex = /(^[a-zA-Z]*)(\d*)$/;
-            matchA = regex.exec(a);
-            matchB = regex.exec(b);
-
-            if (matchA[1] === matchB[1]) {
-                return matchA[2] > matchB[2];
-            }
-            return matchA[1] > matchB[1];
+            return a - b
         });
-        //console.log("alpha num");
-        //console.log(key);
+    } else {
+        key.sort();
     }
     var oldrows = new Array();
     for (i = 0; i < rows.length; i++)
@@ -305,7 +191,6 @@ function lsearch(key, originalList) {
     for (j = 0; j < originalList.length; j++) {
         if (key === originalList[j])
             return j;
-
     }
 }
 
@@ -315,9 +200,9 @@ function renderTable() {
     $("#tableContent").empty();
     for (i = 0; i < rows.length; i++) {
         if (alt++ % 2 == 0) {
-            tbl = tbl + "<tr style='background-color:#91A9ED'>";
+            tbl = tbl + "<tr style='background-color:" + dt_tableRowColor1 + "'>";
         } else
-            tbl = tbl + "<tr style='background-color:#A3ED91'>"
+            tbl = tbl + "<tr style='background-color:" + dt_tableRowColor2 + "'>"
         var rowsA = rows[i].split(";");
         for (j = 0; j < rowsA.length - 1; j++) {
             if (rowsA[j] === "Immediate")
@@ -332,7 +217,6 @@ function renderTable() {
 
     }
     $("#tableContent").append(tbl);
-
 }
 
 function generateFilters() {
@@ -353,16 +237,62 @@ function generateFilters() {
     });
 }
 
+function doSort(thid) {
+    if (sortOn === -1) {
+        sortOn = thid;
+        $("th").find("img").remove();
+        $("#" + sortOn).append("<img src='" + dt_sortUpImageSource + "'  width='12px' height='12px'/>");
+        sort();
+
+    }
+    if (sortOn == thid) {
+        if (sortOrder == 0) {
+            sortOrder = 1;
+            $("th").find("img").remove();
+            $("#" + sortOn).append("<img src='" + dt_sortUpImageSource + "' width='12px' height='12px' />");
+            sort();
+            //console.log("reverse sort : " + rows);
+            renderTable();
+        } else {
+            sortOrder = 0;
+            $("th").find("img").remove();
+            $("#" + sortOn).append("<img src='" + dt_sortDownImageSource + "' width='12px' height='12px'/>");
+            sort();
+            rows.reverse();
+            //console.log("reverse sort : " + rows);
+            renderTable();
+        }
+    } else {
+        sortOn = thid;
+        $("th").find("img").remove();
+        //$("#" + sortOn).append("<img src='sort_up_green.png' width='12px' height='12px'/>");
+        if (sortOrder == 0) {
+            sort();
+            $("#" + sortOn).append("<img src='" + dt_sortUpImageSource + "' width='12px' height='12px'/>");
+            renderTable();
+        } else {
+            sort();
+            $("#" + sortOn).append("<img src='" + dt_sortDownImageSource + "' width='12px' height='12px'/>");
+            rows.reverse();
+            renderTable();
+        }
+    }
+    //console.log("rows after sort:"+rows);
+}
+
+
+
 function renderTableHeader() {
     if (!headerrendered) {
         var tableh = tableheader.split(";");
         var headerstring = "";
-        headerstring = headerstring + '<table border"1"><caption>Victim Information</caption><thead><tr style="background-color: #91A3A3">';
+        headerstring = headerstring + '<table border"1"><caption>' + dt_tableCaption + ' </caption><thead><tr style="background-color:' + dt_tableHeaderColor + ' ">';
         for (x = 0; x < tableh.length - 1; x++) {
-            headerstring = headerstring + "<th id='" + x + "' onclick='doSort('" + x + "')>" + tableh[x] + "</th>";
+            headerstring = headerstring + "<th id='" + x + "' onclick='doSort(" + x + ")' >" + tableh[x] + "</th>";
         }
-        headerstring = headerstring + '</thead><tbody id="tableContent"><tr><td colspan=16><p align="center">Loading Data...</h3></td></tr></tbody></table>';
+        headerstring = headerstring + '</thead><tbody id="tableContent"><tr><td colspan=' + dt_tableHeaderColSpan + '><p align="center">Loading Data...</h3></td></tr></tbody></table>';
         $("#Content").append(headerstring);
         headerrendered = true;
+        dt_tableHeaderColSpan = tableh.length;
     }
 }
